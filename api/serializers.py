@@ -9,7 +9,11 @@ class DirectionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CourseSerializer(serializers.HyperlinkedModelSerializer):
-    lessons = serializers.ListField(child=serializers.IntegerField(), allow_empty=True)
+    lessons = serializers.PrimaryKeyRelatedField(
+        queryset=models.Lesson.objects.all(),
+        many=True,
+        allow_empty=True,
+    )
 
     class Meta:
         model = models.Course
@@ -17,7 +21,11 @@ class CourseSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LessonSerializer(serializers.HyperlinkedModelSerializer):
-    materials = serializers.ListField(child=serializers.IntegerField(), allow_empty=True)
+    materials = serializers.PrimaryKeyRelatedField(
+        queryset=models.LessonMaterial.objects.all(),
+        many=True,
+        allow_empty=True,
+    )
 
     class Meta:
         model = models.Lesson

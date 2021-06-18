@@ -1,4 +1,3 @@
-from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -34,7 +33,11 @@ class Course(models.Model):
         verbose_name='направление',
         validators=[MinValueValidator(0)]
     )
-    lessons = ArrayField(models.IntegerField(), default=list, verbose_name='уроки')
+    lessons = models.ManyToManyField(
+        'Lesson',
+        related_name='course_lessons',
+        verbose_name='уроки'
+    )
 
     class Meta:
         verbose_name = 'курс'
@@ -56,7 +59,11 @@ class Lesson(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name='описание')
     link_to_video = models.URLField(null=True, blank=True, verbose_name='ссылка к видео')
     link_to_file = models.URLField(null=True, blank=True, verbose_name='ссылка к файлу')
-    materials = ArrayField(models.IntegerField(), default=list, verbose_name='материалы')
+    materials = models.ManyToManyField(
+        'LessonMaterial',
+        related_name='lesson_materials',
+        verbose_name='материалы'
+    )
 
     class Meta:
         verbose_name = 'урок'
